@@ -7,200 +7,126 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #eaeaea;
+            color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
+
         h1 {
             text-align: center;
-            color: #333;
+            color: #4CAF50;
+            margin-top: 20px;
         }
-        .quiz-container {
+
+        #quiz {
+            display: none;
             max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
+            margin: 20px auto;
             padding: 20px;
+            background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         .question {
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #e9f7ef;
-            border: 1px solid #28a745;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .options {
-            margin-top: 10px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        input[type="radio"] {
-            margin-right: 10px;
-        }
-        #start-button {
-            display: block;
-            margin: 0 auto;
-            padding: 10px 20px;
-            font-size: 16px;
+
+        button {
+            padding: 15px 30px;
             background-color: #28a745;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 0 auto;
+            margin-top: 20px;
         }
-        #start-button:hover {
+
+        button:hover {
             background-color: #218838;
         }
-        #result {
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .score {
+            font-size: 24px;
             text-align: center;
             margin-top: 20px;
-            font-size: 18px;
-            color: #333;
+            color: #007bff;
         }
     </style>
 </head>
 <body>
-
     <h1>Révision du Code de la Route</h1>
-    
-    <div class="quiz-container" id="quiz" style="display: none;"></div>
-    
-    <button id="start-button">Démarrer le quiz</button>
-    
-    <div id="result"></div>
+    <button id="startButton">Démarrer le Quiz</button>
+    <div id="quiz"></div>
+    <div class="score" id="score"></div>
     
     <script>
         const questions = [
-            {
-                question: "Que signifie ce panneau ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Stop_sign.svg", // Panneau stop
-                options: ["Interdiction de tourner à droite", "Fin de limitation de vitesse", "Arrêt obligatoire"],
-                answer: 2
-            },
-            {
-                question: "Quelle est la vitesse limite en ville ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Speed_limit_50_kmh_sign.png/1200px-Speed_limit_50_kmh_sign.png", // Panneau 50 km/h
-                options: ["50 km/h", "70 km/h", "30 km/h"],
-                answer: 0
-            },
-            {
-                question: "Que signifie ce feu rouge ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Traffic_light_red.svg/1200px-Traffic_light_red.svg.png", // Feu rouge
-                options: ["Passer", "S'arrêter", "Continuer à rouler"],
-                answer: 1
-            },
-            {
-                question: "Quelle est la signification de ce panneau ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Panneau_Route_Barr%C3%A9e.svg/1200px-Panneau_Route_Barr%C3%A9e.svg.png", // Route barrée
-                options: ["Route en travaux", "Route fermée", "Fin de route"],
-                answer: 1
-            },
-            {
-                question: "Que doit-on faire à ce panneau ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Yield_sign.svg/1200px-Yield_sign.svg.png", // Panneau céder le passage
-                options: ["S'arrêter", "Ralentir", "Continuer sans s'arrêter"],
-                answer: 1
-            },
-            {
-                question: "Quelle est la vitesse limite sur autoroute en France ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Speed_limit_130_kmh_sign.png/1200px-Speed_limit_130_kmh_sign.png", // Panneau 130 km/h
-                options: ["130 km/h", "110 km/h", "90 km/h"],
-                answer: 0
-            },
-            {
-                question: "Que signifie ce panneau ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Panneau_de_rappel.svg/1200px-Panneau_de_rappel.svg.png", // Panneau de rappel
-                options: ["Attention, virage dangereux", "Zone de danger", "Fin de zone dangereuse"],
-                answer: 2
-            },
-            {
-                question: "Que doit-on faire à ce feu orange ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Traffic_light_orange.svg/1200px-Traffic_light_orange.svg.png", // Feu orange
-                options: ["S'arrêter", "Passer rapidement", "Ralentir et se préparer à s'arrêter"],
-                answer: 2
-            },
-            {
-                question: "Que signifie ce panneau de limitation de vitesse ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Speed_limit_30_kmh_sign.png/1200px-Speed_limit_30_kmh_sign.png", // Panneau 30 km/h
-                options: ["Vitesse minimale", "Vitesse maximale", "Vitesse recommandée"],
-                answer: 1
-            },
-            {
-                question: "Quelle est la priorité à droite ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Panneau_de_priorite_a_droite.svg/1200px-Panneau_de_priorite_a_droite.svg.png", // Panneau de priorité à droite
-                options: ["Céder le passage", "Priorité à droite", "Stop"],
-                answer: 1
-            },
-            {
-                question: "Quelle est la signification de ce panneau de danger ?",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Danger_sign.svg/1200px-Danger_sign.svg.png", // Panneau de danger
-                options: ["Danger imminent", "Attention danger", "Fin de danger"],
-                answer: 1
-            },
+            { question: "Quelle est la vitesse maximale autorisée sur autoroute en France ?", image: "url-de-l-image-1", answers: ["110 km/h", "130 km/h", "150 km/h"], correct: 1 },
+            { question: "Que signifie ce panneau ?", image: "url-de-l-image-2", answers: ["Stop", "Cédez le passage", "Interdiction"], correct: 2 },
+            { question: "Quand doit-on mettre ses feux de croisement ?", image: "url-de-l-image-3", answers: ["De jour uniquement", "De nuit uniquement", "Dans les tunnels et de nuit"], correct: 2 },
+            { question: "Que doit-on faire au rond-point ?", image: "url-de-l-image-4", answers: ["Priorité à droite", "Céder le passage aux véhicules sur le rond-point", "S'arrêter à l'entrée"], correct: 1 },
+            { question: "Qu'est-ce qu'un panneau de limitation de vitesse ?", image: "url-de-l-image-5", answers: ["Un panneau d'avertissement", "Un panneau d'interdiction", "Un panneau d'information"], correct: 1 },
             // Ajoutez d'autres questions ici jusqu'à 60
         ];
 
-        let currentQuestionIndex = 0;
-        let score = 0;
-        const totalQuestions = 40; // Nombre de questions à répondre
+        document.getElementById("startButton").addEventListener("click", loadQuiz);
 
-        function startQuiz() {
-            currentQuestionIndex = 0;
-            score = 0;
-            document.getElementById('start-button').style.display = 'none';
-            document.getElementById('quiz').style.display = 'block';
-            document.getElementById('result').innerHTML = '';
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            if (currentQuestionIndex < totalQuestions) {
-                const quizContainer = document.getElementById("quiz");
-                const question = questions[currentQuestionIndex];
+        function loadQuiz() {
+            const quizContainer = document.getElementById("quiz");
+            quizContainer.innerHTML = ""; // Clear previous content
+            questions.forEach((q, index) => {
                 const questionHTML = `
                     <div class="question">
-                        <p>Question : </p>
-                        <img src="" alt="Image de la question" style="max-width: 100%; height: auto;">
-                        <div class="options">
-                            " value=""> 
-                                </label>
-                            `).join("<br>")}
-                        </div>
+                        <p>. </p>
+                        <img src="" alt="Image pour la question " />
+                        <div>" value=""> </label>`).join('')}</div>
                     </div>
-                    <button onclick="nextQuestion()">Suivant</button>
                 `;
-                quizContainer.innerHTML = questionHTML;
-            } else {
-                showResult();
-            }
+                quizContainer.innerHTML += questionHTML;
+            });
+            quizContainer.style.display = "block"; // Affiche le quiz
+            document.getElementById("startButton").style.display = "none"; // Cache le bouton
+            showScoreButton(); // Afficher le bouton pour soumettre les réponses
         }
 
-        function nextQuestion() {
-            const selectedOption = document.querySelector(`input[name="question"]:checked`);
-            if (selectedOption) {
-                const answer = parseInt(selectedOption.value);
-                if (answer === questions[currentQuestionIndex].answer) {
+        function showScoreButton() {
+            const scoreButton = document.createElement('button');
+            scoreButton.innerText = 'Soumettre le Quiz';
+            scoreButton.addEventListener('click', calculateScore);
+            document.body.appendChild(scoreButton);
+        }
+
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="question"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) {
                     score++;
                 }
-                currentQuestionIndex++;
-                loadQuestion();
-            } else {
-                alert("Veuillez sélectionner une réponse !");
-            }
+            });
+            document.getElementById("score").innerText = `Vous avez obtenu  sur .`;
         }
-
-        function showResult() {
-            const quizContainer = document.getElementById("quiz");
-            quizContainer.style.display = 'none';
-            document.getElementById('result').innerHTML = `Vous avez obtenu  sur  !`;
-        }
-
-        document.getElementById('start-button').addEventListener('click', startQuiz);
     </script>
-
 </body>
 </html>
