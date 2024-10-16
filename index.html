@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Révision du Code de la Route</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .options {
+            margin-top: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Révision du Code de la Route</h1>
+    
+    <div id="quiz"></div>
+    
+    <script>
+        const questions = [
+            {
+                question: "Que signifie ce panneau ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Stop_sign.svg", // Panneau stop
+                options: ["Interdiction de tourner à droite", "Fin de limitation de vitesse", "Arrêt obligatoire"],
+                answer: 2
+            },
+            {
+                question: "Quelle est la vitesse limite en ville ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Speed_limit_50_kmh_sign.png/1200px-Speed_limit_50_kmh_sign.png", // Panneau 50 km/h
+                options: ["50 km/h", "70 km/h", "30 km/h"],
+                answer: 0
+            },
+            {
+                question: "Que signifie ce feu rouge ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Traffic_light_red.svg/1200px-Traffic_light_red.svg.png", // Feu rouge
+                options: ["Céder le passage", "Arrêt obligatoire", "Feu de signalisation"],
+                answer: 1
+            },
+            {
+                question: "Quelle est la priorité à droite ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Panneau_Priorite_a_droite.svg/1200px-Panneau_Priorite_a_droite.svg.png", // Panneau priorité à droite
+                options: ["Priorité aux piétons", "Priorité aux véhicules à gauche", "Priorité aux véhicules venant de droite"],
+                answer: 2
+            },
+            {
+                question: "Que faire en cas de panne sur autoroute ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Panneau_de_situation.png/1200px-Panneau_de_situation.png", // Panneau autoroute
+                options: ["Rester dans la voiture", "Essayer de réparer", "Déplacer le véhicule"],
+                answer: 0
+            },
+            {
+                question: "Quelle est la signification de ce panneau de danger ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Panneau_de_danger.png/1200px-Panneau_de_danger.png", // Panneau de danger
+                options: ["Piste cyclable", "Zone de danger", "Route barrée"],
+                answer: 1
+            },
+            {
+                question: "Que doit-on faire à un stop ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Stop_sign_usa.svg", // Panneau stop USA
+                options: ["Continuer sans s'arrêter", "S'arrêter complètement", "Ralentir uniquement"],
+                answer: 1
+            },
+            {
+                question: "Quelle est la limitation de vitesse sur autoroute ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Speed_limit_130_kmh_sign.png/1200px-Speed_limit_130_kmh_sign.png", // Panneau 130 km/h
+                options: ["130 km/h", "110 km/h", "90 km/h"],
+                answer: 0
+            },
+            {
+                question: "Que signifie ce panneau de priorité ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Panneau_priorité.svg", // Panneau priorité
+                options: ["Céder le passage", "Priorité", "Interdiction"],
+                answer: 1
+            },
+            {
+                question: "Comment doit-on se comporter face à un piéton traversant ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Panneau_piéton.svg/1200px-Panneau_piéton.svg.png", // Panneau piéton
+                options: ["Accélérer", "Ralentir et céder le passage", "Continuer sans changer de vitesse"],
+                answer: 1
+            },
+            {
+                question: "Que signifie ce panneau de fin de limitation de vitesse ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/End_of_speed_limit_50_kmh_sign.png/1200px-End_of_speed_limit_50_kmh_sign.png", // Panneau fin limitation
+                options: ["Fin de limitation de vitesse", "Limitation de vitesse", "Interdiction de doubler"],
+                answer: 0
+            },
+            {
+                question: "Que signifie ce panneau de stationnement ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Panneau_parking.svg/1200px-Panneau_parking.svg.png", // Panneau stationnement
+                options: ["Stationnement interdit", "Stationnement autorisé", "Stationnement payant"],
+                answer: 1
+            },
+            {
+                question: "Quelle est la couleur de la signalisation de danger ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Warning_sign.png/1200px-Warning_sign.png", // Panneau danger
+                options: ["Rouge", "Jaune", "Vert"],
+                answer: 1
+            },
+            {
+                question: "Comment réagir à un panneau de cédez le passage ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Yield_sign.svg/1200px-Yield_sign.svg.png", // Panneau cédez le passage
+                options: ["S'arrêter complètement", "Ralentir et céder le passage", "Continuer sans s'arrêter"],
+                answer: 1
+            },
+            {
+                question: "Quel est l'usage d'un feu clignotant orange ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Traffic_light_orange.svg/1200px-Traffic_light_orange.svg.png", // Feu orange
+                options: ["Ralentir", "S'arrêter", "Passer rapidement"],
+                answer: 0
+            },
+            {
+                question: "Que faire si un ambulancier vous dépasse ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Ambulance_sign.svg/1200px-Ambulance_sign.svg.png", // Ambulance
+                options: ["Accélérer", "Céder le passage", "Rester à votre place"],
+                answer: 1
+            },
+            {
+                question: "Que signifie ce panneau d'interdiction de dépasser ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/No_overtaking_sign.svg/1200px-No_overtaking_sign.svg.png", // Panneau interdiction de dépasser
+                options: ["Doubler autorisé", "Doubler interdit", "Ralentir"],
+                answer: 1
+            },
+            {
+                question: "Quelle est la signification d'une ligne continue ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Continuous_line.svg/1200px-Continuous_line.svg.png", // Ligne continue
+                options: ["Doubler interdit", "Doubler autorisé", "Ralentir"],
+                answer: 0
+            },
+            {
+                question: "Comment se comporter à un passage piéton ?",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Zebra_crossing_sign.svg/1200px-Zebra_crossing_sign.svg.png", // Passage piéton
+                options: ["Accélérer", "Ralentir et céder le passage", "Continuer sans ralentir"],
+                answer: 1
+            }
+            // Ajoutez d'autres questions ici jusqu'à 60
+        ];
+  
+          function loadQuiz() {
+              const quizContainer = document.getElementById("quiz");
+              questions.forEach((q, index) => {
+                  const questionHTML = `
+                      <div class="question">
+                          <p></p>
+                          <img src="" alt="Image de la question" style="max-width: 100%; height: auto;">
+                          <div class="options">
+                              " value=""> 
+                                  </label>
+                              `).join("<br>")}
+                          </div>
+                      </div>
+                  `;
+                  quizContainer.innerHTML += questionHTML;
+              });
+          }
+  
+          loadQuiz();
+      </script>
+  
+  </body>
+  </html>
