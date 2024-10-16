@@ -41,13 +41,37 @@
         input[type="radio"] {
             margin-right: 10px;
         }
+        #start-button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #start-button:hover {
+            background-color: #218838;
+        }
+        #result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
 
     <h1>Révision du Code de la Route</h1>
     
-    <div class="quiz-container" id="quiz"></div>
+    <div class="quiz-container" id="quiz" style="display: none;"></div>
+    
+    <button id="start-button">Démarrer le quiz</button>
+    
+    <div id="result"></div>
     
     <script>
         const questions = [
@@ -120,27 +144,62 @@
             // Ajoutez d'autres questions ici jusqu'à 60
         ];
 
-        function loadQuiz() {
-            const quizContainer = document.getElementById("quiz");
-            questions.forEach((q, index) => {
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const totalQuestions = 40; // Nombre de questions à répondre
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById('start-button').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('result').innerHTML = '';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex < totalQuestions) {
+                const quizContainer = document.getElementById("quiz");
+                const question = questions[currentQuestionIndex];
                 const questionHTML = `
                     <div class="question">
-                        <p>${q.question}</p>
-                        <img src="${q.image}" alt="Image de la question" style="max-width: 100%; height: auto;">
+                        <p>Question : </p>
+                        <img src="" alt="Image de la question" style="max-width: 100%; height: auto;">
                         <div class="options">
-                            ${q.options.map((option, i) => `
-                                <label>
-                                    <input type="radio" name="question${index}" value="${i}"> ${option}
+                            " value=""> 
                                 </label>
                             `).join("<br>")}
                         </div>
                     </div>
+                    <button onclick="nextQuestion()">Suivant</button>
                 `;
-                quizContainer.innerHTML += questionHTML;
-            });
+                quizContainer.innerHTML = questionHTML;
+            } else {
+                showResult();
+            }
         }
 
-        loadQuiz();
+        function nextQuestion() {
+            const selectedOption = document.querySelector(`input[name="question"]:checked`);
+            if (selectedOption) {
+                const answer = parseInt(selectedOption.value);
+                if (answer === questions[currentQuestionIndex].answer) {
+                    score++;
+                }
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                alert("Veuillez sélectionner une réponse !");
+            }
+        }
+
+        function showResult() {
+            const quizContainer = document.getElementById("quiz");
+            quizContainer.style.display = 'none';
+            document.getElementById('result').innerHTML = `Vous avez obtenu  sur  !`;
+        }
+
+        document.getElementById('start-button').addEventListener('click', startQuiz);
     </script>
 
 </body>
